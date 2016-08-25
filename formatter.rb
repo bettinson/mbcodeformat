@@ -4,20 +4,18 @@
 # hello@mattbettinson.com
 
 class Formatter
-  def initialize
-    @file = nil
-    @indent_level = 0
-  end
-
   def self.format(file)
     @file = file
     #@file.each_line do |line| 
     #  puts format_line(line) 
     #end
     @indent_level = 0
+    new_string = ""
     File.readlines(@file).each do |line|
-      self.format_line(line)
+      new_string += self.format_line(line) + "\n"
     end
+
+    return new_string
   end
 
   private
@@ -51,4 +49,7 @@ end
 first_arg = ARGV[0]
 file = File.new(first_arg)
 
-Formatter.format(file)
+newFileString = Formatter.format(file)
+
+File.open(file, "w") {|f| f.write(newFileString) }
+puts "Formatted (indented, really)"
